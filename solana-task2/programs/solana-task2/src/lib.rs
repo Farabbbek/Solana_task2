@@ -6,11 +6,32 @@ declare_id!("8tJhNdGNzxacg9FKTzPzxbXC1uLUET6CreFfujHHppgS");
 pub mod solana_task2 {
     use super::*;
 
-    pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
-        msg!("Greetings from: {:?}", ctx.program_id);
+    pub fn initialize_platform(ctx: Context<InitializePlatform>) -> Result<()> {
+        msg!("🎵 Music NFT Platform инициализирована!");
+        Ok(())
+    }
+
+    pub fn create_music_nft(
+        ctx: Context<CreateMusicNFT>,
+        name: String,
+        artist: String,
+        rarity: String,
+    ) -> Result<()> {
+        msg!("🎵 Создан NFT: {} от {}, редкость: {}", name, artist, rarity);
         Ok(())
     }
 }
 
 #[derive(Accounts)]
-pub struct Initialize {}
+pub struct InitializePlatform<'info> {
+    #[account(mut)]
+    pub authority: Signer<'info>,
+    pub system_program: Program<'info, System>,
+}
+
+#[derive(Accounts)]
+pub struct CreateMusicNFT<'info> {
+    #[account(mut)]
+    pub payer: Signer<'info>,
+    pub system_program: Program<'info, System>,
+}

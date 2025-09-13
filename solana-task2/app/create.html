@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Создать Music NFT</title>
+    <link rel="stylesheet" href="styles/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-music"></i>
+                <span>Music NFT</span>
+            </div>
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link">Главная</a>
+                <a href="create.html" class="nav-link active">Создать NFT</a>
+                <a href="gallery.html" class="nav-link">Галерея</a>
+            </div>
+            <div class="wallet-section">
+                <button id="connect-wallet" class="wallet-btn">
+                    <i class="fas fa-wallet"></i>
+                    Подключить кошелек
+                </button>
+                <div id="wallet-info" class="wallet-info" style="display: none;">
+                    <span id="wallet-address"></span>
+                    <button id="disconnect-wallet" class="disconnect-btn">×</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="create-page">
+        <div class="container">
+            <div class="create-header">
+                <h1><i class="fas fa-plus-circle"></i> Создать музыкальный NFT</h1>
+                <p>Токенизируй свой трек и начни получать роялти</p>
+            </div>
+
+            <div class="create-content">
+                <form id="create-nft-form" class="create-form">
+                    <div class="form-section">
+                        <h3><i class="fas fa-music"></i> Информация о треке</h3>
+
+                        <div class="form-group">
+                            <label for="track-name">Название трека *</label>
+                            <input type="text" id="track-name" required placeholder="Например: Су">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="artist-name">Имя артиста *</label>
+                            <input type="text" id="artist-name" required placeholder="Ваше имя или псевдоним">
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="genre">Жанр</label>
+                                <select id="genre">
+                                    <option>Электронная</option>
+                                    <option>Поп</option>
+                                    <option>Рок</option>
+                                    <option>Хип-хоп</option>
+                                    <option>Джаз</option>
+                                    <option>Классика</option>
+                                    <option>Фолк</option>
+                                    <option>Другое</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="duration">Длительность (сек)</label>
+                                <input type="number" id="duration" min="1" max="3600" placeholder="180">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3><i class="fas fa-coins"></i> Настройки роялти</h3>
+
+                        <div class="form-group">
+                            <label for="royalty">Процент роялти</label>
+                            <div class="royalty-input">
+                                <input type="range" id="royalty" min="0" max="10" value="5" step="0.5">
+                                <span id="royalty-value">5%</span>
+                            </div>
+                            <small>Процент который вы будете получать с перепродаж</small>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3><i class="fas fa-link"></i> Метаданные</h3>
+
+                        <div class="form-group">
+                            <label for="metadata-uri">URI метаданных</label>
+                            <input type="url" id="metadata-uri" placeholder="https://arweave.net/your-metadata-hash">
+                            <small>Ссылка на JSON файл с метаданными и обложкой</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="symbol">Символ токена</label>
+                            <input type="text" id="symbol" maxlength="10" placeholder="MUSIC" value="MUSIC">
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary" id="create-btn">
+                            <i class="fas fa-rocket"></i>
+                            Создать NFT
+                        </button>
+                        <div class="estimated-cost">
+                            <small><i class="fas fa-info-circle"></i> Ориентировочная стоимость: 0.01 SOL</small>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="preview-section">
+                    <h3><i class="fas fa-eye"></i> Предварительный просмотр</h3>
+                    <div class="nft-preview">
+                        <div class="nft-card preview">
+                            <div class="nft-image">
+                                <i class="fas fa-music"></i>
+                            </div>
+                            <div class="nft-info">
+                                <h4 id="preview-name">Введите название</h4>
+                                <p id="preview-artist">Введите имя артиста</p>
+                                <div class="nft-details">
+                                    <span id="preview-genre">Жанр</span>
+                                    <span id="preview-duration">0:00</span>
+                                </div>
+                                <div class="nft-royalty">
+                                    <i class="fas fa-percentage"></i>
+                                    <span id="preview-royalty">5% роялти</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success Modal -->
+        <div id="success-modal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <h3><i class="fas fa-check-circle"></i> NFT успешно создан!</h3>
+                <p>Ваш музыкальный NFT был создан и сохранен в блокчейне Solana</p>
+                <div class="modal-info">
+                    <p><strong>Mint Address:</strong> <span id="mint-address"></span></p>
+                    <p><strong>Transaction:</strong> <a id="tx-link" target="_blank">Посмотреть в Explorer</a></p>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn btn-primary" onclick="window.location.href='gallery.html'">
+                        Перейти в галерею
+                    </button>
+                    <button class="btn btn-secondary" onclick="closeModal()">
+                        Создать еще один
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
+    <script src="https://unpkg.com/@coral-xyz/anchor@latest/dist/browser.bundle.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/wallet.js"></script>
+    <script src="js/nft.js"></script>
+    <script>
+        // просмотра в режиме реального времени
+        document.getElementById('track-name').addEventListener('input', (e) => {
+            document.getElementById('preview-name').textContent = e.target.value || 'Введите название';
+        });
+
+        document.getElementById('artist-name').addEventListener('input', (e) => {
+            document.getElementById('preview-artist').textContent = e.target.value || 'Введите имя артиста';
+        });
+
+        document.getElementById('genre').addEventListener('change', (e) => {
+            document.getElementById('preview-genre').textContent = e.target.value;
+        });
+
+        document.getElementById('duration').addEventListener('input', (e) => {
+            const duration = parseInt(e.target.value) || 0;
+            const minutes = Math.floor(duration / 60);
+            const seconds = duration % 60;
+            document.getElementById('preview-duration').textContent =
+                `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        });
+
+        document.getElementById('royalty').addEventListener('input', (e) => {
+            const value = e.target.value;
+            document.getElementById('royalty-value').textContent = value + '%';
+            document.getElementById('preview-royalty').textContent = value + '% роялти';
+        });
+
+        // Подача формы
+        document.getElementById('create-nft-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            await createMusicNFT();
+        });
+
+        function closeModal() {
+            document.getElementById('success-modal').style.display = 'none';
+            document.getElementById('create-nft-form').reset();
+        }
+    </script>
+</body>
+
+</html>

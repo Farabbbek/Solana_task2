@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎁 Открытие паков Music NFT</title>
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/rarity.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-music"></i>
+                <span>Music NFT</span>
+            </div>
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link">Главная</a>
+                <a href="create.html" class="nav-link">Создать NFT</a>
+                <a href="packs.html" class="nav-link active">Паки</a>
+                <a href="marketplace.html" class="nav-link">Маркетплейс</a>
+                <a href="gallery.html" class="nav-link">Галерея</a>
+            </div>
+            <div class="wallet-section">
+                <button id="connect-wallet" class="wallet-btn">
+                    <i class="fas fa-wallet"></i>
+                    Подключить кошелек
+                </button>
+                <div id="wallet-info" class="wallet-info" style="display: none;">
+                    <span id="wallet-address"></span>
+                    <button id="disconnect-wallet" class="disconnect-btn">×</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="packs-page">
+        <div class="container">
+            <div class="page-header">
+                <h1><i class="fas fa-box-open"></i> Коллекционные паки</h1>
+                <p>Покупай альбомы и получай случайные NFT с разной редкостью!</p>
+                <div class="stats-bar">
+                    <div class="stat">
+                        <span id="total-packs-sold">0</span>
+                        <small>Паков продано</small>
+                    </div>
+                    <div class="stat">
+                        <span id="user-collection-size">0</span>
+                        <small>В вашей коллекции</small>
+                    </div>
+                    <div class="stat">
+                        <span id="collection-value">0.000</span>
+                        <small>SOL стоимость</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="rarity-legend">
+                <h3>Редкость NFT:</h3>
+                <div class="rarity-items">
+                    <div class="rarity-item common">
+                        <div class="rarity-color"></div>
+                        <span>Обычный (60%)</span>
+                    </div>
+                    <div class="rarity-item rare">
+                        <div class="rarity-color"></div>
+                        <span>Редкий (25%)</span>
+                    </div>
+                    <div class="rarity-item epic">
+                        <div class="rarity-color"></div>
+                        <span>Эпический (10%)</span>
+                    </div>
+                    <div class="rarity-item legendary">
+                        <div class="rarity-color"></div>
+                        <span>Легендарный (4%)</span>
+                    </div>
+                    <div class="rarity-item mythic">
+                        <div class="rarity-color"></div>
+                        <span>Мифический (1%)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="packs-grid">
+                <!-- Стартовый набор -->
+                <div class="pack-item starter-pack">
+                    <div class="pack-visual">
+                        <div class="pack-icon">🎵</div>
+                        <div class="pack-glow"></div>
+                    </div>
+                    <div class="pack-info">
+                        <h3>Starter Pack</h3>
+                        <p class="pack-description">Идеальный старт для новых коллекционеров</p>
+
+                        <div class="pack-contents">
+                            <div class="pack-stat">
+                                <i class="fas fa-coins"></i>
+                                <span>5 NFT</span>
+                            </div>
+                            <div class="pack-stat">
+                                <i class="fas fa-gem"></i>
+                                <span>0.1 SOL</span>
+                            </div>
+                        </div>
+
+                        <div class="rarity-chances">
+                            <div class="chance-item">
+                                <div class="chance-bar common" style="width: 70%"></div>
+                                <span>Обычный 70%</span>
+                            </div>
+                            <div class="chance-item">
+                                <div class="chance-bar rare" style="width: 25%"></div>
+                                <span>Редкий 25%</span>
+                            </div>
+                            <div class="chance-item">
+                                <div class="chance-bar epic" style="width: 5%"></div>
+                                <span>Эпический 5%</span>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary pack-buy-btn" onclick="buyPack('starter')">
+                            <i class="fas fa-shopping-cart"></i>
+                            Купить за 0.1 SOL
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Премиум pack -->
+                <div class="pack-item premium-pack">
+                    <div class="pack-visual">
+                        <div class="pack-icon">🎸</div>
+                        <div class="pack-glow premium"></div>
+                    </div>
+                    <div class="pack-info">
+                        <h3>Premium Pack</h3>
+                        <p class="pack-description">Больше NFT и шанс на легендарные</p>
+
+                        <div class="pack-contents">
+                            <div class="pack-stat">
+                                <i class="fas fa-coins"></i>
+                                <span>10 NFT</span>
+                            </div>
+                            <div class="pack-stat">
+                                <i class="fas fa-gem"></i>
+                                <span>0.5 SOL</span>
+                            </div>
+                        </div>
+
+                        <div class="rarity-chances">
+                            <div class="chance-item">
+                                <div class="chance-bar common" style="width: 50%"></div>
+                                <span>Обычный 50%</span>
+                            </div>
+                            <div class="chance-item">
+                                <div class="chance-bar rare" style="width: 30%"></div>
+                                <span>Редкий 30%</span>
+                            </div>
+                            <div class="chance-item">
+                                <div class="chance-bar epic" style="width: 15%"></div>
+                                <span>Эпический 15%</span>
+                            </div>
+                            <div class="chance-item">
+                                <div class="chance-bar legendary" style="width: 5%"></div>
+                                <span>Легендарный 5%</span>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary pack-buy-btn premium" onclick="buyPack('premium')">
+                            <i class="fas fa-star"></i>
+                            Купить за 0.5 SOL
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Мифическая pack -->
+                <div class="pack-item mythic-pack">
+                    <div class="pack-visual">
+                        <div class="pack-icon">🌟</div>
+                        <div class="pack-glow mythic"></div>
+                        <div class="mythic-particles">
+                            <div class="particle"></div>
+                            <div class="particle"></div>
+                            <div class="particle"></div>
+                        </div>
+                    </div>
+                    <div class="pack-info">
+                        <h3>Mythic Pack</h3>
+                        <p class="pack-description">Эксклюзивные NFT высшего уровня</p>
+
+                        <div class="pack-contents">
+                            <div class="pack-stat">
+                                <i class="fas fa-coins"></i>
+                                <span>3 NFT</span>
+                            </div>
+                            <div class="pack-stat">
+                                <i class="fas fa-gem"></i>
+                                <span>2.0 SOL</span>
+                            </div>
+                        </div>
+
+                        <div class="rarity-chances">
+                            <div class="chance-item">
+                                <div class="chance-bar epic" style="width: 40%"></div>
+                                <span>Эпический 40%</span>
+                            </div>
+                            <div class="chance-item">
+                                <div class="chance-bar legendary" style="width: 50%"></div>
+                                <span>Легендарный 50%</span>
+                            </div>
+                            <div class="chance-item">
+                                <div class="chance-bar mythic" style="width: 10%"></div>
+                                <span>Мифический 10%</span>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary pack-buy-btn mythic" onclick="buyPack('mythic')">
+                            <i class="fas fa-crown"></i>
+                            Купить за 2.0 SOL
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quick-actions">
+                <button class="btn btn-secondary" onclick="window.location.href='gallery.html'">
+                    <i class="fas fa-images"></i>
+                    Моя коллекция
+                </button>
+                <button class="btn btn-secondary" onclick="window.location.href='marketplace.html'">
+                    <i class="fas fa-store"></i>
+                    Маркетплейс
+                </button>
+                <button class="btn btn-secondary" onclick="showCollectionStats()">
+                    <i class="fas fa-chart-bar"></i>
+                    Статистика
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Открываем pack -->
+    <div id="pack-opening-modal" class="modal pack-modal" style="display: none;">
+        <div class="pack-opening-container">
+            <div class="pack-opening-stage">
+                <!-- Этап 1: Открываем упаковку -->
+                <div id="pack-to-open" class="pack-card-large">
+                    <div class="pack-content">
+                        <div class="pack-icon-large">
+                            <i id="pack-icon-display" class="fas fa-gift"></i>
+                        </div>
+                        <h3 id="pack-title">Starter Pack</h3>
+                        <p class="pack-subtitle">Нажмите, чтобы открыть!</p>
+                        <div class="pack-shimmer"></div>
+                    </div>
+                </div>
+
+                <!-- <!- Этап 2: Анимация открытия -> -->
+                <div id="opening-animation" class="opening-animation" style="display: none;">
+                    <div class="opening-text">Открываем пак...</div>
+                    <div class="opening-spinner"></div>
+                </div>
+
+                <div id="revealed-cards" class="revealed-cards" style="display: none;">
+                </div>
+
+                <!-- Controls -->
+                <div class="pack-opening-controls" style="display: none;">
+                    <button class="btn btn-primary" onclick="closePackModal()">
+                        <i class="fas fa-check"></i>
+                        Забрать в коллекцию
+                    </button>
+                    <button class="btn btn-secondary" onclick="openAnotherPack()">
+                        <i class="fas fa-redo"></i>
+                        Открыть еще пак
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Collection Stats Modal -->
+    <div id="stats-modal" class="modal" style="display: none;">
+        <div class="modal-content stats-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-chart-bar"></i> Статистика коллекции</h3>
+                <button onclick="closeStatsModal()" class="close-btn">×</button>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h4>Общее количество</h4>
+                    <div class="stat-number" id="stats-total">0</div>
+                </div>
+                <div class="stat-card">
+                    <h4>Общая стоимость</h4>
+                    <div class="stat-number" id="stats-value">0.000 SOL</div>
+                </div>
+                <div class="stat-card">
+                    <h4>Уникальных артистов</h4>
+                    <div class="stat-number" id="stats-artists">0</div>
+                </div>
+            </div>
+            <div class="rarity-breakdown">
+                <h4>Распределение по редкости:</h4>
+                <div id="rarity-stats"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/wallet.js"></script>
+    <script src="js/rarity-manager.js"></script>
+    <script src="js/pack-manager.js"></script>
+    <script>
+        // Инициализация страницы
+        document.addEventListener('DOMContentLoaded', () => {
+            updateStats();
+            loadPackStats();
+        });
+
+        function updateStats() {
+            const stats = packManager.getCollectionStats();
+
+            document.getElementById('user-collection-size').textContent = stats.totalNFTs;
+            document.getElementById('collection-value').textContent = stats.totalValue.toFixed(3);
+
+            // Обновляем общую статистику
+            const totalPacksSold = localStorage.getItem('totalPacksSold') || '0';
+            document.getElementById('total-packs-sold').textContent = totalPacksSold;
+        }
+
+        function loadPackStats() {
+        }
+
+        function showCollectionStats() {
+            const stats = packManager.getCollectionStats();
+
+            document.getElementById('stats-total').textContent = stats.totalNFTs;
+            document.getElementById('stats-value').textContent = stats.totalValue.toFixed(3) + ' SOL';
+            document.getElementById('stats-artists').textContent = stats.uniqueArtists;
+
+            // Показываем распределение по редкости
+            const rarityStats = document.getElementById('rarity-stats');
+            rarityStats.innerHTML = Object.entries(stats.rarityBreakdown)
+                .map(([rarity, count]) => {
+                    const config = rarityManager.getRarityConfig(rarity);
+                    return `
+                        <div class="rarity-stat-item">
+                            <div class="rarity-color" style="background: ${config.color}"></div>
+                            <span>${config.name}: ${count}</span>
+                        </div>
+                    `;
+                }).join('');
+
+            document.getElementById('stats-modal').style.display = 'flex';
+        }
+
+        function closeStatsModal() {
+            document.getElementById('stats-modal').style.display = 'none';
+        }
+    </script>
+</body>
+
+</html>

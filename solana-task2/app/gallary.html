@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🖼️ Галерея - Music NFT</title>
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/rarity.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-music"></i>
+                <span>Music NFT</span>
+            </div>
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link">Главная</a>
+                <a href="create.html" class="nav-link">Создать NFT</a>
+                <a href="packs.html" class="nav-link">Паки</a>
+                <a href="marketplace.html" class="nav-link">Маркетплейс</a>
+                <a href="gallery.html" class="nav-link active">Галерея</a>
+            </div>
+            <div class="wallet-section">
+                <button id="connect-wallet" class="wallet-btn">
+                    <i class="fas fa-wallet"></i>
+                    Подключить кошелек
+                </button>
+                <div id="wallet-info" class="wallet-info" style="display: none;">
+                    <span id="wallet-address"></span>
+                    <button id="disconnect-wallet" class="disconnect-btn">×</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="gallery-page">
+        <div class="container">
+            <div class="gallery-header">
+                <h1><i class="fas fa-images"></i> Моя коллекция</h1>
+                <p>Управляй своими музыкальными NFT</p>
+                
+                <div class="collection-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-coins"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="total-nfts">0</h3>
+                            <p>Всего NFT</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-gem"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="total-value">0.000</h3>
+                            <p>SOL стоимость</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="unique-artists">0</h3>
+                            <p>Артистов</p>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-crown"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="rare-count">0</h3>
+                            <p>Редких NFT</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gallery-controls">
+                <div class="filters">
+                    <div class="filter-group">
+                        <label>Редкость:</label>
+                        <select id="rarity-filter">
+                            <option value="">Все редкости</option>
+                            <option value="Common">Обычный</option>
+                            <option value="Rare">Редкий</option>
+                            <option value="Epic">Эпический</option>
+                            <option value="Legendary">Легендарный</option>
+                            <option value="Mythic">Мифический</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label>Сортировка:</label>
+                        <select id="sort-filter">
+                            <option value="newest">Новые первые</option>
+                            <option value="rarity">По редкости</option>
+                            <option value="value-high">Цена: высокая → низкая</option>
+                            <option value="value-low">Цена: низкая → высокая</option>
+                            <option value="artist">По артисту</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label>Жанр:</label>
+                        <select id="genre-filter">
+                            <option value="">Все жанры</option>
+                            <option value="Electronic">Electronic</option>
+                            <option value="Synthwave">Synthwave</option>
+                            <option value="House">House</option>
+                            <option value="Techno">Techno</option>
+                            <option value="Ambient">Ambient</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="view-controls">
+                    <button class="btn btn-secondary" onclick="refreshCollection()">
+                        <i class="fas fa-sync-alt"></i>
+                        Обновить
+                    </button>
+                    <button class="btn btn-secondary" onclick="exportCollection()">
+                        <i class="fas fa-download"></i>
+                        Экспорт
+                    </button>
+                    <button class="btn btn-primary" onclick="window.location.href='packs.html'">
+                        <i class="fas fa-plus"></i>
+                        Купить паки
+                    </button>
+                </div>
+            </div>
+
+            <div class="rarity-breakdown">
+                <h3>Распределение по редкости:</h3>
+                <div class="rarity-bars">
+                    <div class="rarity-bar-item">
+                        <div class="rarity-info">
+                            <div class="rarity-dot common"></div>
+                            <span>Обычный</span>
+                        </div>
+                        <div class="rarity-progress">
+                            <div class="progress-bar common" id="common-bar" style="width: 0%"></div>
+                        </div>
+                        <span class="rarity-count" id="common-count">0</span>
+                    </div>
+                    
+                    <div class="rarity-bar-item">
+                        <div class="rarity-info">
+                            <div class="rarity-dot rare"></div>
+                            <span>Редкий</span>
+                        </div>
+                        <div class="rarity-progress">
+                            <div class="progress-bar rare" id="rare-bar" style="width: 0%"></div>
+                        </div>
+                        <span class="rarity-count" id="rare-count">0</span>
+                    </div>
+                    
+                    <div class="rarity-bar-item">
+                        <div class="rarity-info">
+                            <div class="rarity-dot epic"></div>
+                            <span>Эпический</span>
+                        </div>
+                        <div class="rarity-progress">
+                            <div class="progress-bar epic" id="epic-bar" style="width: 0%"></div>
+                        </div>
+                        <span class="rarity-count" id="epic-count">0</span>
+                    </div>
+                    
+                    <div class="rarity-bar-item">
+                        <div class="rarity-info">
+                            <div class="rarity-dot legendary"></div>
+                            <span>Легендарный</span>
+                        </div>
+                        <div class="rarity-progress">
+                            <div class="progress-bar legendary" id="legendary-bar" style="width: 0%"></div>
+                        </div>
+                        <span class="rarity-count" id="legendary-count">0</span>
+                    </div>
+                    
+                    <div class="rarity-bar-item">
+                        <div class="rarity-info">
+                            <div class="rarity-dot mythic"></div>
+                            <span>Мифический</span>
+                        </div>
+                        <div class="rarity-progress">
+                            <div class="progress-bar mythic" id="mythic-bar" style="width: 0%"></div>
+                        </div>
+                        <span class="rarity-count" id="mythic-count">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="nfts-container" class="nfts-grid">
+                <!-- NFT карточки будут загружены динамически -->
+            </div>
+
+            <!-- Empty State -->
+            <div id="empty-state" class="empty-state" style="display: none;">
+                <div class="empty-icon">
+                    <i class="fas fa-music"></i>
+                </div>
+                <h3>Коллекция пуста</h3>
+                <p>У вас пока нет музыкальных NFT</p>
+                <div class="empty-actions">
+                    <a href="create.html" class="btn btn-primary">
+                        <i class="fas fa-plus"></i>
+                        Создать NFT
+                    </a>
+                    <a href="packs.html" class="btn btn-secondary">
+                        <i class="fas fa-gift"></i>
+                        Купить паки
+                    </a>
+                </div>
+            </div>
+
+            <!-- Loading State -->
+            <div id="loading-state" class="loading-state">
+                <div class="spinner"></div>
+                <p>Загружаем вашу коллекцию...</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- NFT Detail Modal -->
+    <div id="nft-modal" class="modal" style="display: none;">
+        <div class="modal-content nft-modal-content">
+            <div class="modal-header">
+                <h3 id="nft-modal-title">NFT Details</h3>
+                <button onclick="closeNFTModal()" class="close-btn">×</button>
+            </div>
+            
+            <div class="nft-detail-content">
+                <div class="nft-detail-image">
+                    <div id="nft-detail-visual" class="nft-card">
+                        <div class="nft-image">
+                            <i class="fas fa-music"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="nft-detail-info">
+                    <div class="nft-basic-info">
+                        <h4 id="nft-detail-name">Track Name</h4>
+                        <p id="nft-detail-artist">Artist</p>
+                        <div class="nft-detail-rarity">
+                            <span id="nft-detail-rarity-badge" class="rarity-badge">Common</span>
+                            <span id="nft-detail-serial">#1234</span>
+                        </div>
+                    </div>
+                    
+                    <div class="nft-metadata">
+                        <div class="metadata-item">
+                            <i class="fas fa-music"></i>
+                            <span>Жанр: <strong id="nft-detail-genre">Electronic</strong></span>
+                        </div>
+                        <div class="metadata-item">
+                            <i class="fas fa-clock"></i>
+                            <span>Длительность: <strong id="nft-detail-duration">3:00</strong></span>
+                        </div>
+                        <div class="metadata-item">
+                            <i class="fas fa-gem"></i>
+                            <span>Стоимость: <strong id="nft-detail-value">0.000 SOL</strong></span>
+                        </div>
+                    </div>
+                    
+                    <div class="nft-attributes">
+                        <h5>Особые атрибуты:</h5>
+                        <div id="nft-detail-attributes" class="attributes-list">
+                            <!-- Attributes will be populated -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="nft-detail-actions">
+                <button class="btn btn-primary" onclick="sellNFT()">
+                    <i class="fas fa-tag"></i>
+                    Продать на маркетплейсе
+                </button>
+                <button class="btn btn-secondary" onclick="shareNFT()">
+                    <i class="fas fa-share"></i>
+                    Поделиться
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Music NFT Platform. Создано на Solana Blockchain.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/wallet.js"></script>
+    <script src="js/rarity-manager.js"></script>
+    <script src="js/pack-manager.js"></script>
+    <script src="js/gallery.js"></script>
+    <script>
+        // Инициализация галереи
+        let galleryManager;
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            galleryManager = new GalleryManager();
+            window.galleryManager = galleryManager;
+        });
+
+        // Глобальные функции
+        function refreshCollection() {
+            galleryManager.loadCollection();
+        }
+
+        function exportCollection() {
+            galleryManager.exportCollection();
+        }
+
+        function showNFTDetails(nftIndex) {
+            galleryManager.showNFTDetails(nftIndex);
+        }
+
+        function closeNFTModal() {
+            document.getElementById('nft-modal').style.display = 'none';
+        }
+
+        function sellNFT() {
+            // Перенаправляем на маркетплейс
+            window.location.href = 'marketplace.html';
+        }
+
+        function shareNFT() {
+            const nftData = galleryManager.selectedNFT;
+            if (nftData) {
+                const text = `Посмотри на мой ${nftData.rarity} NFT "${nftData.name}" от ${nftData.artist}! 🎵`;
+                
+                if (navigator.share) {
+                    navigator.share({ title: 'Music NFT', text: text });
+                } else {
+                    navigator.clipboard.writeText(text);
+                    utils.showNotification('Информация скопирована в буфер обмена!', 'success');
+                }
+            }
+        }
+    </script>
+</body>
+</html>

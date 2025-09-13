@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎵 Music NFT Platform</title>
+    <link rel="stylesheet" href="styles/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-music"></i>
+                <span>Music NFT</span>
+            </div>
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link active">Главная</a>
+                <a href="create.html" class="nav-link">Создать NFT</a>
+                <a href="gallery.html" class="nav-link">Галерея</a>
+            </div>
+            <div class="wallet-section">
+                <button id="connect-wallet" class="wallet-btn">
+                    <i class="fas fa-wallet"></i>
+                    Подключить кошелек
+                </button>
+                <div id="wallet-info" class="wallet-info" style="display: none;">
+                    <span id="wallet-address"></span>
+                    <button id="disconnect-wallet" class="disconnect-btn">×</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h1>🎵 Токенизируй свою музыку</h1>
+                <p>Создавай музыкальные NFT на Solana с автоматическими роялти</p>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <h3 id="total-nfts">0</h3>
+                        <p>NFT создано</p>
+                    </div>
+                    <div class="stat">
+                        <h3 id="total-artists">0</h3>
+                        <p>Артистов</p>
+                    </div>
+                    <div class="stat">
+                        <h3 id="total-royalties">0</h3>
+                        <p>SOL в роялти</p>
+                    </div>
+                </div>
+                <div class="hero-actions">
+                    <a href="create.html" class="btn btn-primary">
+                        <i class="fas fa-plus"></i>
+                        Создать NFT
+                    </a>
+                    <a href="gallery.html" class="btn btn-secondary">
+                        <i class="fas fa-images"></i>
+                        Смотреть галерею
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="container">
+                <h2>Почему Music NFT?</h2>
+                <div class="features-grid">
+                    <div class="feature">
+                        <i class="fas fa-coins"></i>
+                        <h3>Автоматические роялти</h3>
+                        <p>Получайте доход с каждой перепродажи автоматически</p>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-bolt"></i>
+                        <h3>Быстро и дешево</h3>
+                        <p>Solana - быстрые транзакции за копейки</p>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-shield-alt"></i>
+                        <h3>Безопасность</h3>
+                        <p>Метаданные хранятся on-chain навсегда</p>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-users"></i>
+                        <h3>Прямая связь</h3>
+                        <p>Напрямую с фанатами, без посредников</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="recent-nfts">
+            <div class="container">
+                <h2>Последние NFT</h2>
+                <div id="recent-nfts-grid" class="nfts-grid">
+                    <div class="nft-placeholder">
+                        <i class="fas fa-music"></i>
+                        <p>Подключите кошелек для просмотра NFT</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>© 2025 Music NFT Platform | Хакатон Solana Day</p>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
+    <script src="https://unpkg.com/@coral-xyz/anchor@latest/dist/browser.bundle.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/wallet.js"></script>
+    <script src="js/nft.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>

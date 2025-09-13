@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏪 Music NFT</title>
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/rarity.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-music"></i>
+                <span>Music NFT</span>
+            </div>
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link">Главная</a>
+                <a href="create.html" class="nav-link">Создать NFT</a>
+                <a href="packs.html" class="nav-link">Паки</a>
+                <a href="marketplace.html" class="nav-link active">Маркетплейс</a>
+                <a href="gallery.html" class="nav-link">Галерея</a>
+            </div>
+            <div class="wallet-section">
+                <button id="connect-wallet" class="wallet-btn">
+                    <i class="fas fa-wallet"></i>
+                    Подключить кошелек
+                </button>
+                <div id="wallet-info" class="wallet-info" style="display: none;">
+                    <span id="wallet-address"></span>
+                    <button id="disconnect-wallet" class="disconnect-btn">×</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="marketplace-page">
+        <div class="container">
+            <div class="page-header">
+                <h1><i class="fas fa-store"></i> Маркетплейс</h1>
+                <p>Покупай и продавай уникальные музыкальные NFT</p>
+            </div>
+
+            <div class="marketplace-controls">
+                <div class="filters">
+                    <select id="rarity-filter">
+                        <option value="">Все редкости</option>
+                        <option value="Common">Обычный</option>
+                        <option value="Rare">Редкий</option>
+                        <option value="Epic">Эпический</option>
+                        <option value="Legendary">Легендарный</option>
+                        <option value="Mythic">Мифический</option>
+                    </select>
+
+                    <select id="sort-filter">
+                        <option value="price-low">Цена:низкая → высокая</option>
+                        <option value="price-high">Цена:высокая → низкая</option>
+                        <option value="rarity">По редкости</option>
+                        <option value="newest">Новые первые</option>
+                    </select>
+
+                    <div class="price-range">
+                        <input type="number" id="min-price" placeholder="Мин. цена" step="0.001">
+                        <span>—</span>
+                        <input type="number" id="max-price" placeholder="Макс. цена" step="0.001">
+                        <span>SOL</span>
+                    </div>
+                </div>
+
+                <div class="view-controls">
+                    <button class="btn btn-secondary" onclick="showMyListings()">
+                        <i class="fas fa-list"></i>
+                        Мои лоты
+                    </button>
+                    <button class="btn btn-primary" onclick="showSellModal()">
+                        <i class="fas fa-plus"></i>
+                        Выставить на продажу
+                    </button>
+                </div>
+            </div>
+
+            <div class="marketplace-stats">
+                <div class="stat">
+                    <span id="total-listings">0</span>
+                    <small>Активных лотов</small>
+                </div>
+                <div class="stat">
+                    <span id="floor-price">0.000</span>
+                    <small>Минимальная цена (SOL)</small>
+                </div>
+                <div class="stat">
+                    <span id="volume-24h">0.000</span>
+                    <small>Объем торгов за 24ч</small>
+                </div>
+            </div>
+
+            <div id="marketplace-grid" class="nfts-grid">
+                <!-- Лоты будут загружены динамически -->
+                <div class="loading-placeholder">
+                    <div class="spinner"></div>
+                    <p>Загрузка лотов...</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Buy NFT Modal -->
+    <div id="buy-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-shopping-cart"></i> Купить NFT</h3>
+                <button onclick="closeBuyModal()" class="close-btn">×</button>
+            </div>
+            <div class="nft-buy-info">
+                <div class="nft-preview" id="buy-nft-preview">
+                    <!-- NFT preview -->
+                </div>
+                <div class="buy-details">
+                    <div class="price-info">
+                        <h4>Цена</h4>
+                        <div class="price" id="buy-price">0.000 SOL</div>
+                    </div>
+                    <div class="seller-info">
+                        <h4>Продавец</h4>
+                        <div class="seller" id="buy-seller">Unknown</div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-primary" onclick="confirmPurchase()">
+                    <i class="fas fa-check"></i>
+                    Подтвердить покупку
+                </button>
+                <button class="btn btn-secondary" onclick="closeBuyModal()">
+                    Отмена
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sell NFT Modal -->
+    <div id="sell-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-tag"></i> Выставить на продажу</h3>
+                <button onclick="closeSellModal()" class="close-btn">×</button>
+            </div>
+            <div class="sell-form">
+                <div class="form-group">
+                    <label>Выберите NFT из коллекции:</label>
+                    <div id="my-nfts-grid" class="my-nfts-grid">
+                        <!-- User's NFTs -->
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="sell-price">Цена (SOL):</label>
+                    <input type="number" id="sell-price" step="0.001" min="0.001" placeholder="0.100">
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="instant-sell">
+                        Мгновенная продажа (без аукциона)
+                    </label>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-primary" onclick="confirmListing()">
+                    <i class="fas fa-gavel"></i>
+                    Выставить на продажу
+                </button>
+                <button class="btn btn-secondary" onclick="closeSellModal()">
+                    Отмена
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/wallet.js"></script>
+    <script src="js/rarity-manager.js"></script>
+    <script src="js/pack-manager.js"></script>
+    <script src="js/marketplace.js"></script>
+</body>
+
+</html>

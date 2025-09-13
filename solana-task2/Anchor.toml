@@ -1,19 +1,19 @@
 [toolchain]
-package_manager = "yarn"
+anchor_version = "0.30.0"
 
 [features]
-resolution = true
+seeds = false
 skip-lint = false
 
-[programs.localnet]
+[programs.devnet]
 solana_task2 = "8tJhNdGNzxacg9FKTzPzxbXC1uLUET6CreFfujHHppgS"
 
 [registry]
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "localnet"
-wallet = '~\.config\solana\id.json'
+cluster = "Devnet" 
+wallet = "~/.config/solana/id.json"
 
 [scripts]
-test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
+test = "yarn run ts-mocha -p ./tsconfig.json -t 10000 tests/**/*.ts"
