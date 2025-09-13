@@ -6,13 +6,13 @@ declare_id!("8tJhNdGNzxacg9FKTzPzxbXC1uLUET6CreFfujHHppgS");
 pub mod solana_task2 {
     use super::*;
 
-    pub fn initialize_platform(ctx: Context<InitializePlatform>) -> Result<()> {
+    pub fn initialize_platform(_ctx: Context<InitializePlatform>) -> Result<()> {
         msg!("🎵 Music NFT Platform инициализирована!");
         Ok(())
     }
 
     pub fn create_music_nft(
-        ctx: Context<CreateMusicNFT>,
+        _ctx: Context<CreateMusicNFT>,
         name: String,
         artist: String,
         rarity: String,
