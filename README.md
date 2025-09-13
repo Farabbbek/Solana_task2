@@ -51,8 +51,7 @@ anchor deploy
 ### 3. Запуск фронтенда
 ```bash
 cd app
-python3 -m http.server 3000
-# Открой http://localhost:3000
+npx http-server -p 8080
 ```
 
 ## 🎮 Использование
