@@ -34,21 +34,7 @@
 
 ## ⚡ Быстрый старт
 
-### 1. Настройка окружения
-```bash
-solana config set --url devnet
-solana-keygen new -o ./keypair.json
-solana config set --keypair ./keypair.json
-solana airdrop 2
-```
-
-### 2. Деплой контракта  
-```bash
-anchor build
-anchor deploy
-```
-
-### 3. Запуск фронтенда
+### 1. Запуск фронтенда
 ```bash
 cd app
 npx http-server -p 8080
